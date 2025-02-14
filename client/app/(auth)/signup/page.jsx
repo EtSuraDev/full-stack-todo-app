@@ -8,17 +8,19 @@ import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import "react-toastify/dist/ReactToastify.css"
+import * as motion from "motion/react-client"
 
 function Page() {
   const [click, setCkick] = useState(true)
   const [num, setNum] = useState(0)
+  const [loading, setLoading] = useState(false)
   const route = useRouter()
   
 
   const validationSchema = Yup.object({
     name: Yup.string().required(),
-    userName: Yup.string().required().min(3,),
-    password: Yup.string().required().min(5, )
+    userName: Yup.string().required().min(3),
+    password: Yup.string().required().min(5)
   })
   const formik = useFormik({
     initialValues: {
@@ -34,10 +36,13 @@ function Page() {
   })
   
   function clickSubmit() {
-    if(!formik.errors.name || !formik.errors.userName || !formik.errors.password){
+    console.log(formik.errors.password, formik.errors.name, formik.errors.userName)
+    if(!formik.errors.password && !formik.errors.name && !formik.errors.userName){
+      console.log(formik.errors.password)
       if(formik.values.name || formik.values.password || formik.values.userName){
        setCkick( priv => !priv)
        setNum(prev => 1)
+       setLoading(prev => true)
       }
     }
   }
@@ -49,7 +54,6 @@ function Page() {
   useEffect(() => {
     if(num == 0 ) return
     async function fetchData() {
-      
       let res
       try {
           res = await axios.post("http://localhost:8080/api/auth/signup", user, {
@@ -63,8 +67,10 @@ function Page() {
             toast.success(res.data.message)
            route.push("/")
         }
+        setLoading(prev => false)
         return res
       } catch (error) {
+          setLoading(prev => false)
           toast.error(error.response.data.message)
           console.log(error)
       }
@@ -85,33 +91,96 @@ function Page() {
             onChange={formik.handleChange}
             value={formik.values.name}
             onBlur={formik.handleBlur}
-            className={`p-2 focus:outline-none w-full ${formik.touched.name && formik.errors.name && "placeholder:text-red-500 border-red-500 border"} `}
+            className={`p-2 focus:outline-none w-full ${formik.touched.name && formik.errors.name && "border-red-500 border rounded-md"} `}
           />
+          {
+          formik.touched.name && formik.errors.name && 
+          <p className=' text-[14px] text-red-400 w-full text-start mt-[-14px] '> { formik.errors.name} </p> 
+          }
           <label htmlFor="userName" className=' w-full text-white text-start '>*User Name</label>
           <input type="text" 
-            className={`p-2 focus:outline-none w-full ${formik.touched.userName && formik.errors.userName && "placeholder:text-red-500 border-red-500"}  border`}
+            className={`p-2 focus:outline-none w-full ${formik.touched.userName && formik.errors.userName && "border-red-500 border rounded-md "}  border`}
             id='userName'
             name='userName'
             onChange={formik.handleChange}
             value={formik.values.userName}
             onBlur={formik.handleBlur}
-            placeholder={formik.touched.userName && formik.errors.userName ? formik.errors.userName : 'User Name' }
+            placeholder={'User Name' }
           />
+          {
+          formik.touched.userName && formik.errors.userName && 
+          <p className=' text-[14px] text-red-400 w-full text-start mt-[-14px] '> { formik.errors.userName} </p> 
+          }
           <label htmlFor="password" className=' w-full text-white text-start '> *Password </label>
           <input type="password"
-            className={`p-2 focus:outline-none w-full ${formik.touched.password && formik.errors.password && "placeholder:text-red-500 border-red-500 border"}`}
+            className={`p-2 focus:outline-none w-full ${formik.touched.password && formik.errors.password && "border-red-500 border rounded-md"}`}
             id='password'
             name='password'
             onChange={formik.handleChange}
             value={formik.values.password}
             onBlur={formik.handleBlur}
-            placeholder={formik.touched.password && formik.errors.password ? formik.errors.password : 'Password' }
+            placeholder={'Password' }
           />
+          {
+          formik.touched.password && formik.errors.password && 
+          <p className=' text-[14px] text-red-400 w-full text-start mt-[-14px] '> { formik.errors.password} </p> 
+          }
           <input type="submit"  value="Submit" onClick={() => clickSubmit()}
            className='text-white font-bold border border-white w-fit py-1 px-4 rounded-full cursor-pointer  ' />
            <p className=' text-white  '> I have account  <Link href="/login" className=' text-red-300 hover:text-red-500 active:text-white ' > Login </Link> </p>
         </form>
       </div>
+      {
+        loading && (
+          <div className=' h-[100vh] w-full flex items-start pt-12 justify-center absolute z-50'>
+        <div className=' flex items-end gap-x-2 '>
+          <p className=' text-2xl font-extrabold text-white '>
+            Loading
+          </p>
+          <motion.div 
+            className="w-2 h-2 bg-white rounded-full"
+            initial={{ y: -12 }}
+            animate={{ y: -2 }}
+            transition={{ repeat: Infinity, repeatType: "reverse", duration: 0.5 }}
+          />
+
+          <motion.div 
+            className=' w-2 h-2 bg-white rounded-full'
+            initial={{ y: -12 }}
+            animate={{ y: -2 }}
+            transition={{
+              repeat: Infinity,
+              repeatType: "reverse", 
+              duration: 0.5 ,
+              delay: 0.1,
+            }}
+          />
+          <motion.div 
+            className=' w-2 h-2 bg-white rounded-full'
+            initial={{ y: -12 }}
+            animate={{ y: -2 }}
+            transition={{
+              repeat: Infinity, 
+              repeatType: "reverse", 
+              duration: 0.5,
+              delay: 0.2,
+            }}
+          />
+          <motion.div 
+            className=' w-2 h-2 bg-white rounded-full'
+            initial={{ y: -12 }}
+            animate={{ y: -2 }}
+            transition={{ 
+              repeat: Infinity, 
+              repeatType: "reverse", 
+              duration: 0.5 ,
+              delay: 0.3,
+            }}
+          />
+        </div>
+      </div>
+        ) 
+      }
     </div>
   )
 }
