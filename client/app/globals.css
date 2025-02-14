@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body {
+    background: hsl(235, 21%, 11%);
+}
+
+.top-box {
+    background-image: url(/assets/bg-mobile-dark.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+@media only screen and (min-width: 800px) {
+    .top-box {
+        background-image: url(/assets/bg-desktop-dark.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+}
+
+.drark {
+    /* - Very Dark Blue: hsl(235, 21%, 11%)
+- Very Dark Desaturated Blue: hsl(235, 24%, 19%)
+- Light Grayish Blue: hsl(234, 39%, 85%)
+- Light Grayish Blue (hover): hsl(236, 33%, 92%)
+- Dark Grayish Blue: hsl(234, 11%, 52%)
+- Very Dark Grayish Blue: hsl(233, 14%, 35%)
+- Very Dark Grayish Blue: hsl(237, 14%, 26%) */
+    background-color: hsl(235, 21%, 11%);
+    background-color: hsl(235, 24%, 19%);
+    background-color: hsl(234, 39%, 85%);
+    background-color: hsl(236, 33%, 92%);
+    background-color: hsl(234, 11%, 52%);
+    background-color: hsl(233, 14%, 35%);
+    background-color: hsl(237, 14%, 26%);
+}
+
+.white {
+    /* - Very Light Gray: hsl(0, 0%, 98%)
+- Very Light Grayish Blue: hsl(236, 33%, 92%)
+- Light Grayish Blue: hsl(233, 11%, 84%)
+- Dark Grayish Blue: hsl(236, 9%, 61%)
+- Very Dark Grayish Blue: hsl(235, 19%, 35%) */
+    background-color: hsl(0, 0%, 98%);
+    background-color: hsl(236, 33%, 92%);
+    background-color: hsl(233, 11%, 84%);
+    background-color: hsl(236, 9%, 61%);
+    background-color: hsl(235, 19%, 35%);
+}
