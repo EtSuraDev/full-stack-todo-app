@@ -1,50 +1,79 @@
-import Image from "next/image";
+"use client"
+
+
+import axios from "axios";
+axios.defaults.withCredentials = true
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import * as motion from "motion/react-client"
+
 
 export default function Home() {
-  const data = [
-    {
-      data: "wduigw efhvccs chwechwecw efbweccwewef webn c wduigw efhvccs chwechwecw efbweccwewef webn c wduigw efhvccs chwechwecw efbweccwewef webn c wduigw efhvccs chwechwecw efbweccwewef webn c wduigw efhvccs chwechwecw efbweccwewef webn c ",
-      completed: false
-    },
-    {
-      data: "wduigwefhvccschwechwecw efbweccwewef webn c ",
-      completed: false
-    },
-    {
-      data: "wduigw efhvccschwe chwecw efbweccwewef webn c ",
-      completed: false
-    },
-    {
-      data: "wduigwefhvccschwechwecw efbweccwewef webn c ",
-      completed: false
-    },
-    {
-      data: "wduigwefhvccschwechwecw efbweccwewef webn c ",
-      completed: false
-    },
-    {
-      data: "wduigw efhvccschwe chwecw efbweccwewef webn c ",
-      completed: false
-    },
-    {
-      data: "wduigwefhvccschwechwecw efbweccwewef webn c ",
-      completed: false
-    }
-  ]
+  const [ data, setData ] = useState([])
+  const [ loading, setLoading ] = useState(true)
+  const router = useRouter()
+
+
+  // const data = [
+  //   {
+  //     data: "wduigw efhvccs chwechwecw efbweccwewef webn c wduigw efhvccs chwechwecw efbweccwewef webn c wduigw efhvccs chwechwecw efbweccwewef webn c wduigw efhvccs chwechwecw efbweccwewef webn c wduigw efhvccs chwechwecw efbweccwewef webn c ",
+  //     completed: false
+  //   },
+  //   {
+  //     data: "wduigwefhvccschwechwecw efbweccwewef webn c ",
+  //     completed: false
+  //   },
+  //   {
+  //     data: "wduigw efhvccschwe chwecw efbweccwewef webn c ",
+  //     completed: false
+  //   },
+  //   {
+  //     data: "wduigwefhvccschwechwecw efbweccwewef webn c ",
+  //     completed: false
+  //   },
+  //   {
+  //     data: "wduigwefhvccschwechwecw efbweccwewef webn c ",
+  //     completed: false
+  //   },
+  //   {
+  //     data: "wduigw efhvccschwe chwecw efbweccwewef webn c ",
+  //     completed: false
+  //   },
+  //   {
+  //     data: "wduigwefhvccschwechwecw efbweccwewef webn c ",
+  //     completed: false
+  //   }
+  // ]
 
 
   function howMuchCompleted() {
     let num = 0
+    if(data){
     for (let index = 0; index < data.length; index++) {
       data[index].completed === false
       num++
     }
-    return num
+    return num}
   }
 
 
+  useEffect(() => {
+    async function getData() {
+      try {
+        const res = await axios.get("http://localhost:8080/home")
+        setLoading(_=> false)
+        setData(_ => res.data.data.data)
+      } catch (error) {
+        router.push("/signup")
+        console.log(error)
+      }
+    
+    }
+    getData()
+  }, [])
+
   return (
-    <div className="body">
+    <div className="body relative ">
 
 
       <div className=" top-box h-fit py-[70px]  ">
@@ -67,6 +96,7 @@ export default function Home() {
       <div>
         <div className="bg-[hsl(235,24%,19%)]  w-[93%] mx-auto h-fit max-w-[620] absolute left-1/2 -translate-x-1/2 top-[267px]  ">
           {
+            data ?
             data.map((item, index) => {
               return(
                 <div key={index} className=" text-white text-[13px] flex p-6 gap-x-5 items-start  justify-between border-b border-[hsl(237,14%,26%)] ">
@@ -91,6 +121,8 @@ export default function Home() {
                 </div>
               )
             })
+          : 
+          null
           }
           <div className=" text-[hsl(234,11%,52%)] text-[13px] p-6 flex justify-between items-center  ">
             <div>
@@ -117,7 +149,57 @@ export default function Home() {
         </div>
       </div>
 
+      {
+        loading && (
+          <div className=' h-[100vh] w-full flex items-start pt-12 justify-center absolute z-50 bg-inherit backdrop-blur-sm top-0 '>
+        <div className=' flex items-end gap-x-2 '>
+          <p className=' text-2xl font-extrabold text-white '>
+            Loading
+          </p>
+          <motion.div 
+            className="w-2 h-2 bg-white rounded-full"
+            initial={{ y: -12 }}
+            animate={{ y: -2 }}
+            transition={{ repeat: Infinity, repeatType: "reverse", duration: 0.5 }}
+          />
 
+          <motion.div 
+            className=' w-2 h-2 bg-white rounded-full'
+            initial={{ y: -12 }}
+            animate={{ y: -2 }}
+            transition={{
+              repeat: Infinity,
+              repeatType: "reverse", 
+              duration: 0.5 ,
+              delay: 0.1,
+            }}
+          />
+          <motion.div 
+            className=' w-2 h-2 bg-white rounded-full'
+            initial={{ y: -12 }}
+            animate={{ y: -2 }}
+            transition={{
+              repeat: Infinity, 
+              repeatType: "reverse", 
+              duration: 0.5,
+              delay: 0.2,
+            }}
+          />
+          <motion.div 
+            className=' w-2 h-2 bg-white rounded-full'
+            initial={{ y: -12 }}
+            animate={{ y: -2 }}
+            transition={{ 
+              repeat: Infinity, 
+              repeatType: "reverse", 
+              duration: 0.5 ,
+              delay: 0.3,
+            }}
+          />
+        </div>
+      </div>
+        ) 
+      }
     </div>
   );
 }

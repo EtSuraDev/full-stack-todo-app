@@ -30,6 +30,8 @@ const signup = async(req, res) => {
         res.cookie("token", token, {
             httpOnly: true, // Prevents JavaScript from accessing the cookie
             maxAge: 3600000, // 1 hour
+            sameSite: "None",
+            secure: process.env.PRODUCTION, // Only enable for production
         });
 
 
@@ -37,7 +39,7 @@ const signup = async(req, res) => {
 
     } catch (error) {
         console.log(`ERROR ON user signup \n ${error}`)
-        return res.status(400).json({ success: false, message: "some thing wrong" })
+        return res.status(500).json({ success: false, message: "some thing wrong" })
     }
 }
 
@@ -58,11 +60,15 @@ const login = async(req, res) => {
         res.cookie("token", token, {
             httpOnly: true, // Prevents JavaScript from accessing the cookie
             maxAge: 3600000, // 1 hour
+            sameSite: "None",
+            secure: process.env.PRODUCTION, // Only enable for production
+
         });
 
 
         res.status(201).json({ success: true, message: "account successful creatd", data: { name: user.name, userName: userName } })
     } catch (error) {
+        return res.status(500).json({ success: false, message: "some thing wrong" })
         console.log(`ERROR on login \n ${error}`)
     }
 }

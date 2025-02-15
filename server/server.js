@@ -5,16 +5,21 @@ const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
 const authRoute = require("./route/authRouter.js")
 const connectDB = require("./DB/connect.js")
+const getData = require("./route/getData.router.js")
+const userData = require("./model/data.model.js")
+
 
 
 const app = express()
 const PORT = process.env.PORT || 8080
 const DB_URL = process.env.DB_URL
-const LOCALHOST = process.env.LOCALHOST || "http://localhost:3000"
 
 
 
-app.use(cors());
+app.use(cors({
+    origin: process.env.FRONT_END_URL,
+    credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
@@ -23,6 +28,7 @@ app.use(cookieParser());
 
 
 app.use("/api/auth", authRoute)
+app.use("/home", getData)
 
 
 
