@@ -1,0 +1,23 @@
+##   front-end 
+##   back-end
+
+
+    auth ( signup, login, logout )
+        server -> controler -> outh.js
+        ---> /api/auth/signup
+        ---> /api/auth/login
+        ---> /api/auth/logout
+
+
+    get data
+        server -> controler -> getData.js
+            ----> /
+        when the user hit the home page this api will send all user data (task)
+
+
+    all routes
+        server -> route -> ....
+        all rout fills are soter here (auth, getData ....)
+
+
+

@@ -54,7 +54,7 @@ function page() {
         if(num == 0 ) return
         async function fetchData() {
         try {
-            let res = await axios.post("http://localhost:8080/api/auth/login", user, {
+            let res = await axios.post(`${process.env.domain}/api/auth/login`, user, {
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -75,10 +75,10 @@ function page() {
         fetchData(); 
     }, [click]);
   return (
-    <div className='w-full flex justify-center items-center flex-col h-[100vh] '>
+    <div className='w-full flex bg-black justify-center items-center flex-col h-[100vh] '>
       <ToastContainer/>
       <div className='w-[90%] max-w-[400px] md:w-[60%] flex flex-col  '>
-        <h1 className=' text-white text-2xl font-bold mb-7' > Login </h1>
+        <h1 className=' text-white text-3xl font-bold mb-7 text-center' > Login </h1>
         <form onSubmit={formik.handleSubmit} className='flex flex-col bg-inherit w-full gap-y-4 items-center'>
           <label htmlFor="userName" className=' w-full text-white text-start '>*User Name</label>
           <input type="text" 

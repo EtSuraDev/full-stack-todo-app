@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const authRoute = require("./route/authRouter.js")
 const connectDB = require("./DB/connect.js")
 const getData = require("./route/getData.router.js")
+const crud = require("./route/CRUD.router.js")
 const userData = require("./model/data.model.js")
 
 
@@ -29,6 +30,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoute)
 app.use("/home", getData)
+app.use("/crud", crud)
 
 
 

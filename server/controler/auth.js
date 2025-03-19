@@ -2,17 +2,17 @@ const model = require("../model/user.model.js")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const SECRET_KEY = process.env.SECRET_KEY
+const data = require("../model/data.model.js")
+
 
 
 
 const signup = async(req, res) => {
     const { name, userName, password } = req.body
     try {
-
         if (!name || !userName || !password) {
             return res.status(400).json({ success: false, data: null, message: "pleas provide all in puts" })
         }
-
         const check = await model.findOne({ userName })
         if (check) {
             return res.status(400).json({ success: false, message: "the username exist", data: null })
@@ -24,6 +24,11 @@ const signup = async(req, res) => {
             password: hidennPassword
         })
         user.save()
+        const userData = await new data({
+            data: [],
+            userId: user._id
+        })
+        userData.save()
 
 
         const token = jwt.sign({ userId: user._id }, SECRET_KEY, { expiresIn: "1h" });
@@ -75,7 +80,7 @@ const login = async(req, res) => {
 
 
 
-const signout = () => {
+const signout = (req, res) => {
     res.clearCookie("token", {
         httpOnly: true, // Ensure the cookie is protected
     });
